@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE CRAFT SHOP - Login</title>
+    <style>
+        body {
+            background-color: #00000061; /* สีนุ้ง */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-image: url('your-image-path.jpg'); /* เปลี่ยนเป็นที่อยู่ของรูปภาพของคุณ */
+            background-size: cover; /* ทำให้รูปภาพครอบคลุมพื้นที่ทั้งหมด */
+            background-position: center; /* จัดตำแหน่งรูปภาพให้อยู่กึ่งกลาง */
+            background-repeat: no-repeat; /* ป้องกันการวนซ้ำของรูปภาพ */
+            background-color: #000000;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgb(34, 0, 255);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #0077ff;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #0044ff;
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #007bff;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>เข้าสู่ระบบ</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="Username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">เข้าสู่ระบบ</button>
+            <p id="error-message" style="color: red;"></p>
+            <p>ยังไม่มีบัญชี? <a href="signup.html">สมัครบัญชี</a></p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // ป้องกันการส่งฟอร์มแบบปกติ
+    
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var errorMessage = document.getElementById('error-message');
+    
+            // รับข้อมูลผู้ใช้จาก localStorage
+            var existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    
+            // ตรวจสอบว่าผู้ใช้มีอยู่ในระบบหรือไม่
+            var user = existingUsers.find(user => user.username === username && user.password === password);
+    
+            if (user) {
+                // บันทึกผู้ใช้ปัจจุบันใน localStorage สำหรับการจัดการเซสชัน
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                // เปลี่ยนเส้นทางไปยังหน้าหลักหลังจากเข้าสู่ระบบสำเร็จ
+                window.location.href = 'index.html';
+            } else {
+                errorMessage.textContent = 'Username หรือ Password ไม่ถูกต้อง!';
+            }
+        });
+    </script>
+    

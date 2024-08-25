@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - THE CRAFT SHOP</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .profile-container {
+            background-color: #ffffff5b;
+            padding: 25px;
+            border-radius: 80px;
+            box-shadow: 0 0 20px rgba(34, 0, 255, 0.5);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .profile-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .profile-info {
+            margin-bottom: 20px;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px auto;
+            border: 2px solid #0044ff;
+            background-color: #333;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .edit-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #074d87;
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .edit-button:hover {
+            background-color: #ffffff;
+        }
+
+        .image-picker {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .image-picker.show {
+            display: flex;
+        }
+
+        .image-picker .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff0000;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .image-picker .close-button:hover {
+            background-color: #ffffff;
+        }
+
+        .image-picker .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .image-picker img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            object-fit: cover;
+        }
+
+        /* เพิ่ม CSS สำหรับปุ่มกลับไปหน้า index */
+        .back-button {
+            background-color: #0044ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>โปรไฟล์</h2>
+        <div class="profile-image" id="profile-image">
+            <button class="edit-button" onclick="showImagePicker()">แก้ไขรูป</button>
+        </div>
+        <div class="profile-info">
+            <p id="profile-username">Username: </p>
+            <p id="profile-email">Email: </p>
+            <p id="profile-phone">Phone: </p>
+        </div>
+        <button class="back-button" onclick="goToIndex()">กลับไปหน้า Home</button>
+    </div>
+
+    <div class="image-picker" id="image-picker">
+        <button class="close-button" onclick="closeImagePicker()">ปิด</button>
+        <div class="image-gallery">
+            <img src="img/1.png" onclick="selectImage('img/1.png')">
+            <img src="img/2.png" onclick="selectImage('img/2.png')">
+            <img src="img/3.png" onclick="selectImage('img/3.png')">
+            <img src="img/4.png" onclick="selectImage('img/4.png')">
+            <img src="img/5.png" onclick="selectImage('img/5.png')">
+            <img src="img/6.png" onclick="selectImage('img/6.png')">
+            <img src="img/7.png" onclick="selectImage('img/7.png')">
+            <img src="img/8.png" onclick="selectImage('img/8.png')">
+            <img src="img/9.png" onclick="selectImage('img/9.png')">
+        </div>
+    </div>
+
+    <script>
+        function loadProfile() {
+            var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (currentUser) {
+                document.getElementById('profile-username').textContent = 'Username: ' + currentUser.username;
+                document.getElementById('profile-email').textContent = 'Email: ' + (currentUser.email || 'ไม่ระบุอีเมล');
+                document.getElementById('profile-phone').textContent = 'Phone: ' + (currentUser.phone || 'ไม่ระบุเบอร์โทร');
+
+                var profileImageElement = document.getElementById('profile-image');
+                var defaultImage = localStorage.getItem('defaultProfileImage') || ''; // ลบการใช้ defaultImage
+
+                profileImageElement.style.backgroundImage = 'url(' + (currentUser.profileImage || defaultImage) + ')';
+            } else {
+                window.location.href = 'signup.html';
+            }
+        }
+
+        loadProfile();
+
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+
+        function showImagePicker() {
+            document.getElementById('image-picker').classList.add('show');
+        }
+
+        function closeImagePicker() {
+            document.getElementById('image-picker').classList.remove('show');
+        }
+
+        function selectImage(imageUrl) {
+            var profileImageElement = document.getElementById('profile-image');
+            profileImageElement.style.backgroundImage = 'url(' + imageUrl + ')';
+
+            var currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+            currentUser.profileImage = imageUrl;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            updateDefaultImage(imageUrl);
+            closeImagePicker();
+        }
+
+        function updateDefaultImage(imageUrl) {
+            localStorage.setItem('defaultProfileImage', imageUrl);
+        }
+    </script>
+</body>
+</html>
