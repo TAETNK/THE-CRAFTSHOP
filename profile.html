@@ -121,8 +121,8 @@
             object-fit: cover;
         }
 
-        /* เพิ่ม CSS สำหรับปุ่มกลับไปหน้า index */
-        .back-button {
+        /* เพิ่ม CSS สำหรับปุ่มกลับไปหน้า index และปุ่ม logout */
+        .back-button, .logout-button {
             background-color: #0044ff;
             color: #ffffff;
             border: none;
@@ -133,8 +133,12 @@
             margin-top: 20px;
         }
 
-        .back-button:hover {
+        .back-button:hover, .logout-button:hover {
             background-color: #007bff;
+        }
+
+        .logout-button {
+            margin-top: 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
         }
     </style>
 </head>
@@ -150,6 +154,7 @@
             <p id="profile-phone">Phone: </p>
         </div>
         <button class="back-button" onclick="goToIndex()">กลับไปหน้า Home</button>
+        <button class="logout-button" onclick="logout()">Logout</button>
     </div>
 
     <div class="image-picker" id="image-picker">
@@ -177,7 +182,7 @@
                 document.getElementById('profile-phone').textContent = 'Phone: ' + (currentUser.phone || 'ไม่ระบุเบอร์โทร');
 
                 var profileImageElement = document.getElementById('profile-image');
-                var defaultImage = localStorage.getItem('defaultProfileImage') || ''; // ลบการใช้ defaultImage
+                var defaultImage = localStorage.getItem('defaultProfileImage') || '';
 
                 profileImageElement.style.backgroundImage = 'url(' + (currentUser.profileImage || defaultImage) + ')';
             } else {
@@ -213,6 +218,12 @@
 
         function updateDefaultImage(imageUrl) {
             localStorage.setItem('defaultProfileImage', imageUrl);
+        }
+
+        function logout() {
+            // ลบข้อมูลผู้ใช้ที่เข้าสู่ระบบออกจาก localStorage
+            localStorage.removeItem('currentUser');
+            window.location.href = 'signup.html'; // เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
         }
     </script>
 </body>
